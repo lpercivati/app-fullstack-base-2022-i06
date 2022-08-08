@@ -33,8 +33,17 @@ class Main implements EventListenerObject, ResponseLister {
                     datosVisuale += `<img src="../static/images/window.png" alt="" class="circle">`;
                 }
                 
-                datosVisuale += `<span class="title nombreDisp">${disp.name}</span>
-                <p>${disp.description}
+                datosVisuale += 
+                `
+                <p>
+                <span class="title nombreDisp" id="name_${disp.id}">${disp.name}</span>
+                <input type="text" id="name_edit_${disp.id}" value="${disp.name}" style="display: none"/>
+
+                </p>
+                
+                <p>
+                    <span id="descr_${disp.id}">${disp.description}</span>
+                    <input type="text" id="descr_edit_${disp.id}" value="${disp.description}" style="display: none"/>
                 </p>
 
                 <a href="#!" class="secondary-content">
@@ -45,6 +54,8 @@ class Main implements EventListenerObject, ResponseLister {
                   <span class="lever"></span>
                   On
                 </label>
+                <a class="btn-floating btn-large waves-effect waves-light green"><i class="material-icons">edit</i></a>
+
               </div>
                 </a>
               </li>`

@@ -7,6 +7,7 @@ class FrameWork{
             if (metodo == "GET") {
               lister.handlerResponse(xmlHttp.status,xmlHttp.responseText)
             } else {
+              debugger;
               lister.handlerResponseActualizar(xmlHttp.status,xmlHttp.responseText)
             }
             }

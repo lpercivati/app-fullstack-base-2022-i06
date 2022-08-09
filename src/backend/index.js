@@ -16,14 +16,14 @@ var  devices = [
         'id': 1, 
         'name': 'Lampara 1', 
         'description': 'Luz living', 
-        'state': 1, 
+        'intensity': 100, 
         'type': 1, 
     },
     { 
         'id': 2, 
         'name': 'Ventilador 1', 
         'description': 'Ventilador Habitacion', 
-        'state': 1, 
+        'intensity': 50, 
         'type': 2, 
     },
 ];
@@ -52,5 +52,9 @@ app.get('/devices/', function(req, res) {
 app.listen(PORT, function(req, res) {
     console.log("NodeJS API running correctly");
 });
+
+app.delete("/borrar", function(req, res){
+    console.log(req)
+})
 
 //=======[ End of file ]=======================================================

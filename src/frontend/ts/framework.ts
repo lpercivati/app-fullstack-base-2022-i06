@@ -12,9 +12,6 @@ class FrameWork{
             }
             }
     }
-
-
-    
     
         xmlHttp.open(metodo, url, true);
         if (metodo == "POST") {
@@ -23,8 +20,6 @@ class FrameWork{
         } else {
           xmlHttp.send();  
         }
-    
-        
      
   }
 }

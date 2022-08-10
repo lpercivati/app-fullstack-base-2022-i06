@@ -17,14 +17,14 @@ var  devices = [
         'name': 'Lampara 1', 
         'description': 'Luz living', 
         'intensity': 100, 
-        'type': 1, 
+        'type': "Luz", 
     },
     { 
         'id': 2, 
         'name': 'Ventilador 1', 
         'description': 'Ventilador Habitacion', 
         'intensity': 50, 
-        'type': 2, 
+        'type': "Ventilador", 
     },
 ];
 //=======[ Main module code ]==================================================

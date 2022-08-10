@@ -1,78 +1,96 @@
 <!DOCTYPE html>
-  <html>
-    <head>
-      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-      <link type="text/css" rel="stylesheet" href="./static/css/materialize.min.css"  media="screen,projection"/>
-      <link type="text/css" rel="stylesheet" href="./static/css/styles.css"  media="screen,projection"/>
-      <script type="text/javascript" src="./static/js/materialize.min.js"></script>
-      <script type="text/javascript" src="js/persona.js"></script>
-      <script type="text/javascript" src="js/admin.js"></script>
-      <script type="text/javascript" src="js/user.js"></script>
-      <script type="text/javascript" src="js/device.js"></script>
-      <script type="text/javascript" src="js/framework.js"></script>
-      <script type="text/javascript" src="js/main.js"></script>
+<html>
 
-      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </head>
-    <body>
-        <main>
-            <!-- Navigation bar -->
-            <nav style="background-color:#124580">
-                <div class="nav-wrapper">
-                    <a href="#!" class="brand-logo left" style="margin-left: 15px;">Smart Home</a>
-                    <ul id="nav-mobile" class="right" style="margin-right: 15px;">
-                        <li><a href="#">Help</a></li>
-                    </ul>
+<head>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="./static/css/materialize.min.css" media="screen,projection" />
+    <link type="text/css" rel="stylesheet" href="./static/css/styles.css" media="screen,projection" />
+    <script type="text/javascript" src="./static/js/materialize.min.js"></script>
+    <script type="text/javascript" src="js/persona.js"></script>
+    <script type="text/javascript" src="js/admin.js"></script>
+    <script type="text/javascript" src="js/user.js"></script>
+    <script type="text/javascript" src="js/device.js"></script>
+    <script type="text/javascript" src="js/framework.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+
+<body>
+    <main>
+        <!-- Navigation bar -->
+        <nav style="background-color:#124580">
+            <div class="nav-wrapper">
+                <a href="#!" class="brand-logo left" style="margin-left: 15px;">Smart Home</a>
+                <ul id="nav-mobile" class="right" style="margin-right: 15px;">
+                    <li><a href="#">Help</a></li>
+                </ul>
+            </div>
+        </nav>
+        <!-- Page Body -->
+        <div class="container">
+            <br />
+            <h3 id="btnDoble">Smart Home Web Client!</h3>
+            <br />
+            <div id="caja"></div>
+
+            <div id="agregar-elemento">
+                <ul class="collapsible">
+                    <li>
+                        <div class="collapsible-header"><i class="material-icons">add</i>Agregar dispositivo</div>
+                        <div class="collapsible-body row">
+                            <div class="input-field col s3">
+                                <input id="input-nombre" type="text">
+                                <label for="input-nombre">Nombre</label>
+                            </div>
+                            <div class="input-field col s3">
+                                <input id="input-descr" type="text">
+                                <label for="input-descr">Descripción</label>
+                            </div>
+                            <div class="input-field col s3">
+                                <select>
+                                    <option value="" disabled selected>Elija su dispositivo</option>
+                                    <option value="Luz">Luz</option>
+                                    <option value="Ventilador">Ventilador</option>
+                                    <option value="Sensor">Sensor</option>
+                                    <option value="Camara">Cámara</option>
+                                </select>
+                            </div>
+                            <div class="input-field col s3">
+                                <input id="input-intensity" min="0" max="100" type="number">
+                                <label for="input-intensity">Intensidad</label>
+                            </div>
+
+                            <div class="col s12 center">
+                                <a class="waves-effect waves-light btn"><i class="material-icons left">add</i>Agregar dispositivo</a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </main>
+    <!-- Page Footer -->
+    <footer class="page-footer" style="background-color:#124580">
+        <div class="container">
+            <div class="row">
+                <div class="col l6 s6">
+                    <h5 class="white-text">Smart Home</h5>
+                    <p class="grey-text text-lighten-4">Copyright ### - 2021</p>
                 </div>
-            </nav>	
-            <!-- Page Body -->
-            <div class="container">
-                <br/>
-                <h3 id="btnDoble">Smart Home Web Client!</h3>
-                <br/>
-                <div id="caja" style="background-color: red;"> 
-             
-                </div>
-                <div class="row">
-                    <div class="input-field col s12 m12 l12 xl12">
-                        <textarea id="textarea_1" class="materialize-textarea" style="height: 150px;" readonly></textarea>
-                    </div>
-                    <div class="col s4 m4 l2 xl2">
-                        <div class="input-field col s12">
-                            <select multiple>
-                              <option value="" disabled selected>Choose your option</option>
-                              <option value="1">Option 1</option>
-                              <option value="2">Option 2</option>
-                              <option value="3">Option 3</option>
-                            </select>
-                            <label>Materialize Multiple Select</label>
-                          </div>
-                        <button id="btnSaludar" class="btn waves-effect waves-light button-view red"><i class="material-icons left">directions_run</i>Saludar</button>
-                        <button id="btnDoble2" class="btn waves-effect waves-light button-view red"><i class="material-icons left">cloud</i>Doble</button>
-                    </div>
-                </div>
-            </div>	
-        </main>
-		<!-- Page Footer -->
-        <footer class="page-footer" style="background-color:#124580">
-            <div class="container">
-                <div class="row">
-                    <div class="col l6 s6">
-                        <h5 class="white-text">Smart Home</h5>
-                        <p class="grey-text text-lighten-4">Copyright ### - 2021</p>
-                    </div>
-                    <div class="col l6 s6">
-                        <h5 class="white-text right-align">Contact</h5>
-                        <p class="white-text right-align">
-                            <a class="grey-text text-lighten-3" href="!#">Email | </a>
-                            <a class="grey-text text-lighten-3" href="!#">Twitter | </a>
-                            <a class="grey-text text-lighten-3" href="!#">LinkedIn</a>
-                        </p>
-                    </div>
+                <div class="col l6 s6">
+                    <h5 class="white-text right-align">Contact</h5>
+                    <p class="white-text right-align">
+                        <a class="grey-text text-lighten-3" href="!#">Email | </a>
+                        <a class="grey-text text-lighten-3" href="!#">Twitter | </a>
+                        <a class="grey-text text-lighten-3" href="!#">LinkedIn</a>
+                    </p>
                 </div>
             </div>
-        </footer>
-		<!--JavaScript at end of body for optimized loading-->
+        </div>
+    </footer>
+    <!--JavaScript at end of body for optimized loading-->
 
-    </body>
-  </html>
+</body>
+
+</html>

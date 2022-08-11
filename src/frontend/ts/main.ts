@@ -6,9 +6,9 @@ class Main implements EventListenerObject, ResponseLister {
     public framework: FrameWork = new FrameWork();
     private listaTipos: Map<string, string> = new Map()
     constructor() {
-        
+
         this.framework.ejecutarRequest("GET", "http://localhost:8000/devices", this)
- 
+
         this.listaPersonas.push(new Usuario("Juan", 12, "jPerez"));
         this.listaPersonas.push(new Administrador("Pedro", 35));
         this.listaPersonas.push(new Persona("S", 12));
@@ -23,62 +23,76 @@ class Main implements EventListenerObject, ResponseLister {
         if (status == 200) {
             let respuestaString: string = response;
             let respuesta: Array<Device> = JSON.parse(respuestaString);
-            
+
             let cajaDiv = document.getElementById("caja");
             cajaDiv.innerHTML = this.getDevicesPage(respuesta);
 
-            for (let disp of respuesta) {
-                let botonEdicion = document.getElementById("btn_edit_"+ disp.id)
-                let botonGuardado = document.getElementById("btn_save_"+ disp.id)
-                let botonEliminar = document.getElementById("btn_delete_"+ disp.id)
+            let agregarDispositivoDiv = document.getElementById("agregar-elemento");
+            agregarDispositivoDiv.innerHTML = this.getAddDevicePage();
 
-                botonEdicion.addEventListener("click",this)
-                botonGuardado.addEventListener("click",this)
-                botonEliminar.addEventListener("click",this)
+            var elems = document.querySelectorAll('.collapsible');
+            M.Collapsible.init(elems, {accordion: false});  
+            elems = document.querySelectorAll('select');
+            M.FormSelect.init(elems, "");
+
+            let botones = document.querySelectorAll(".boton")
+            for (let boton of botones){
+                boton.addEventListener("click", this)
             }
-          } else {
-              alert("Algo salio mal")
-          }
+            
+        } else {
+            alert("Algo salio mal")
+        }
     }
-    
+
     handlerResponseActualizar(status: number, response: string) {
         if (status == 200) {
             //this.changeStatus(id, "block", "none")
-            alert("Se acutlizo correctamente")    
+            alert("Se acutlizo correctamente")
         } else {
-            alert("Error")    
+            alert("Error")
         }
-        
+
     }
 
-    public handleEvent(e:Event): void {
+    public handleEvent(e: Event): void {
         let objetoEvento = <HTMLInputElement>e.target;
         let action = objetoEvento.getAttribute("action")
         let id = objetoEvento.getAttribute("code")
-        
-        if(action == "edit"){
+
+        if (action == "edit") {
             this.changeStatus(id, "none", "block")
         }
-        
-        if(action == "save"){
-            let datos = { 
-                "id": id, 
-                "state": objetoEvento.checked,
+
+        if (action == "save") {
+            let datos = {
+                "id": id,
                 "name": (<HTMLInputElement>document.getElementById("name_edit_" + id)).value,
                 "description": (<HTMLInputElement>document.getElementById("descr_edit_" + id)).value,
                 "intensity": (<HTMLInputElement>document.getElementById("intensity_edit_" + id)).value
             };
-            this.framework.ejecutarRequest("POST","http://localhost:8000/actualizar", this, datos)
+            this.framework.ejecutarRequest("POST", "http://localhost:8000/actualizar", this, datos)
             this.changeStatus(id, "block", "none")
         }
 
-        if(action == "delete"){
-            this.framework.ejecutarRequest("DELETE","http://localhost:8000/borrar/" + id, this)
+        if (action == "delete") {
+            this.framework.ejecutarRequest("DELETE", "http://localhost:8000/borrar/" + id, this)
         }
-        
+
+        if(action == "add"){
+            let datos = {
+                "id": (<HTMLInputElement>document.getElementById("input-id")).value,
+                "name": (<HTMLInputElement>document.getElementById("input-nombre")).value,
+                "description": (<HTMLInputElement>document.getElementById("input-descr")).value,
+                "intensity": (<HTMLInputElement>document.getElementById("input-intensity")).value,
+                "type": (<HTMLInputElement>document.getElementById("input-tipo")).value
+            };
+
+            this.framework.ejecutarRequest("POST", "http://localhost:8000/crear", this, datos)
+        }
     }
 
-    changeStatus(id: string, estadoEdicion: string, estadoInformativo: string) : void {
+    changeStatus(id: string, estadoEdicion: string, estadoInformativo: string): void {
         document.getElementById("name_" + id).style.display = estadoEdicion
         document.getElementById("descr_" + id).style.display = estadoEdicion
         document.getElementById("intensity_" + id).style.display = estadoEdicion
@@ -86,17 +100,17 @@ class Main implements EventListenerObject, ResponseLister {
         document.getElementById("btn_edit_a_" + id).style.display = estadoEdicion
 
         document.getElementById("name_edit_" + id).style.display = estadoInformativo
-        document.getElementById("descr_edit_" + id).style.display = estadoInformativo    
-        document.getElementById("intensity_edit_" + id).style.display = estadoInformativo     
+        document.getElementById("descr_edit_" + id).style.display = estadoInformativo
+        document.getElementById("intensity_edit_" + id).style.display = estadoInformativo
         document.getElementById("btn_save_" + id).style.display = estadoInformativo
         document.getElementById("btn_save_a_" + id).style.display = estadoInformativo
     }
 
-    getDevicesPage(respuesta: Array<Device>) : string {
-        let datosVisuales = 
-        `<ul class="collection">`
-            for (let disp of respuesta) {
-                datosVisuales += ` 
+    getDevicesPage(respuesta: Array<Device>): string {
+        let datosVisuales =
+            `<ul class="collection">`
+        for (let disp of respuesta) {
+            datosVisuales += ` 
                 <li class="collection-item avatar row">
                     <div class="col s6">
                 
@@ -118,44 +132,69 @@ class Main implements EventListenerObject, ResponseLister {
                         </div>
                         <div class="col s2">
                             <a class="btn-floating btn-large waves-effect waves-light green" id="btn_edit_a_${disp.id}">
-                                <i class="material-icons" action="edit" code="${disp.id}" id="btn_edit_${disp.id}">edit</i>
+                                <i class="material-icons boton" action="edit" code="${disp.id}" id="btn_edit_${disp.id}">edit</i>
                             </a>
                             <a class="btn-floating btn-large waves-effect waves-light green" id="btn_save_a_${disp.id}" style="display:none">
-                                <i class="material-icons" action="save" code="${disp.id}" id="btn_save_${disp.id}">save</i>
+                                <i class="material-icons boton" action="save" code="${disp.id}" id="btn_save_${disp.id}">save</i>
                             </a>
                         </div>
                         <div class="col s2">
                             <a class="btn-floating btn-large waves-effect waves-light red" id="btn_delete_a_${disp.id}">
-                                <i class="material-icons" action="delete" code="${disp.id}" id="btn_delete_${disp.id}">delete</i>
+                                <i class="material-icons boton" action="delete" code="${disp.id}" id="btn_delete_${disp.id}">delete</i>
                             </a>
                         </div>
                     </div>
                 </li>`
-            }
-            datosVisuales += `</ul>`
+        }
+        datosVisuales += `</ul>`
 
-            return datosVisuales
+        return datosVisuales
+    }
+
+    getAddDevicePage(): string {
+        return `
+        <ul class="collapsible" id="">
+            <li>
+                <div class="collapsible-header"><i class="material-icons">add</i>Agregar dispositivo</div>
+                <div class="collapsible-body row">
+                <div class="input-field col s2">
+                        <input id="input-id" type="number">
+                        <label for="input-id">Id</label>
+                    </div>
+                    <div class="input-field col s2">
+                        <input id="input-nombre" type="text">
+                        <label for="input-nombre">Nombre</label>
+                    </div>
+                    <div class="input-field col s3">
+                        <input id="input-descr" type="text">
+                        <label for="input-descr">Descripción</label>
+                    </div>
+                    <div class="input-field col s3">
+                        <select id="input-tipo">
+                            <option value="" disabled selected>Elija su dispositivo</option>
+                            <option value="Luz">Luz</option>
+                            <option value="Ventilador">Ventilador</option>
+                            <option value="Sensor">Sensor</option>
+                            <option value="Camara">Cámara</option>
+                        </select>
+                    </div>
+                    <div class="input-field col s2">
+                        <input id="input-intensity" min="0" max="100" type="number">
+                        <label for="input-intensity">Intensidad</label>
+                    </div>
+
+                    <div class="col s12 center">
+                        <a class="waves-effect waves-light btn boton" action="add">
+                            <i class="material-icons left" >add</i>Agregar dispositivo
+                        </a>
+                    </div>
+                </div>
+            </li>
+        </ul>`
     }
 }
 
 window.addEventListener("load", () => {
-    var elems = document.querySelectorAll('select');
-    var instances = M.FormSelect.init(elems,"");
     let main: Main = new Main();
     main.nombre = "Matias"
-
-    var elemsf = document.querySelectorAll('.collapsible');
-    var instances = M.Collapsible.init(elemsf);
 });
-
-document.addEventListener('DOMContentLoaded', function() {
-    var elems = document.querySelectorAll('.collapsible');
-    var instances = M.Collapsible.init(elems);
-  });
-
-
-
-
-
-
-

@@ -6,20 +6,29 @@ class FrameWork{
           if (xmlHttp.readyState == 4) {
             if (metodo == "GET") {
               lister.handlerResponse(xmlHttp.status,xmlHttp.responseText)
-            } else {
-              debugger;
+            }
+
+            if (metodo == "PUT"){
               lister.handlerResponseActualizar(xmlHttp.status,xmlHttp.responseText)
             }
+
+            if (metodo == "POST"){
+              lister.handlerResponseCrear(xmlHttp.status,xmlHttp.responseText)
             }
+
+            if (metodo == "DELETE"){
+              lister.handlerResponseBorrar(xmlHttp.status, xmlHttp.responseText)
+            }    
+          }
     }
     
-        xmlHttp.open(metodo, url, true);
-        if (metodo == "POST") {
-          xmlHttp.setRequestHeader("Content-Type", "application/json")
-          xmlHttp.send(JSON.stringify(data))
-        } else {
-          xmlHttp.send();  
-        }
+      xmlHttp.open(metodo, url, true);
+      if (metodo == "POST" || metodo == "PUT") {
+        xmlHttp.setRequestHeader("Content-Type", "application/json")
+        xmlHttp.send(JSON.stringify(data))
+      } else {
+        xmlHttp.send();  
+      }
      
   }
 }

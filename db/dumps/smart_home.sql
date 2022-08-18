@@ -32,11 +32,13 @@ SET time_zone = "+00:00";
 -- Table structure for table `Devices`
 --
 
+DROP TABLE `Devices`;
+
 CREATE TABLE `Devices` (
   `id` int(11) NOT NULL,
   `name` varchar(64) NOT NULL,
   `description` varchar(128) NOT NULL,
-  `state` int(11) NOT NULL,
+  `intensity` int(11) NOT NULL,
   `type` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -44,13 +46,9 @@ CREATE TABLE `Devices` (
 -- Dumping data for table `Devices`
 --
 
-INSERT INTO `Devices` (`id`, `name`, `description`, `state`, `type`) VALUES
-(1, 'Lampara 1', 'Luz living', 1, 0),
-(2, 'Lampara 2', 'Luz cocina', 0, 0),
-(3, 'Velador', 'Velador living', 1, 0),
-(4, 'Persiana 1', 'Persiana living', 1, 1),
-(5, 'Persiana 2', 'Persiana de la cocina', 1, 1),
-(6, 'Persiana 3', 'Persiana balcon', 0, 1);
+INSERT INTO `Devices` (`id`, `name`, `description`, `intensity`, `type`) VALUES
+(1, 'Lampara 1', 'Luz living', 100, 'Luz'),
+(2, 'Ventilador 1', 'Ventilador Habitacion', 50, 'Ventilador');
 
 --
 -- Indexes for dumped tables

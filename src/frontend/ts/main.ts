@@ -18,7 +18,7 @@ class Main implements EventListenerObject, ResponseLister {
         this.listaTipos["Luz"] = "lightbulb";
         this.listaTipos["Ventilador"] = "window";
     }
-
+   
     public handlerResponse(status: number, response: string) {
         if (status == 200) {
             let respuestaString: string = response;
@@ -47,12 +47,30 @@ class Main implements EventListenerObject, ResponseLister {
 
     handlerResponseActualizar(status: number, response: string) {
         if (status == 200) {
-            //this.changeStatus(id, "block", "none")
-            alert("Se acutlizo correctamente")
+            debugger;
+            this.changeStatus(response, "block", "none")
+            alert("Se actualizó correctamente")
         } else {
-            alert("Error")
+            alert(response)
         }
 
+    }
+
+    handlerResponseBorrar(status: number, response: string) {
+        if (status == 200) {
+            alert("Se actualizó correctamente")
+            window.location.reload()
+        } else {
+            alert(response)
+        }
+    }
+    handlerResponseCrear(status: number, response: string) {
+        if (status == 200) {
+            alert("Se actualizó correctamente")
+            window.location.reload()
+        } else {
+            alert(response)
+        }
     }
 
     public handleEvent(e: Event): void {
@@ -71,8 +89,7 @@ class Main implements EventListenerObject, ResponseLister {
                 "description": (<HTMLInputElement>document.getElementById("descr_edit_" + id)).value,
                 "intensity": (<HTMLInputElement>document.getElementById("intensity_edit_" + id)).value
             };
-            this.framework.ejecutarRequest("POST", "http://localhost:8000/actualizar", this, datos)
-            this.changeStatus(id, "block", "none")
+            this.framework.ejecutarRequest("PUT", "http://localhost:8000/actualizar", this, datos)
         }
 
         if (action == "delete") {

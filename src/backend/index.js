@@ -28,33 +28,86 @@ var  devices = [
     },
 ];
 //=======[ Main module code ]==================================================
-app.post("/actualizar",function(req,res){
-    console.log("Llegue al servidor")
-    console.log(Object.keys(req.body).length)
-    if(req.body.id!=undefined&& req.body.state!=undefined){
-        console.log(req.body);
-        res.send("actualizo");
-    }else{
-        res.send("ERROR");
-    }
+app.put("/actualizar",function(req,res){
+    let error = validarBody(req.body)
 
-   
+    console.log(req.body)
+    if(error){
+        res.status(400).send(error)
+    }else{
+        res.send(req.body.id);
+    }
 });
-app.get('/devices/', function(req, res) {
-   
-    console.log("Alguien pidio divices!");
-    setTimeout(function(){
-        res.send(JSON.stringify(devices)).status(200);
-    }, 2000);
+
+app.post("/crear",function(req,res){
+    let error = validarBody(req.body)
     
+    if(error){
+        res.status(400).send(error)
+        return
+    }
+    console.log(req.body)
+
+    utils.query("INSERT INTO Devices VALUES (?, ?, ?, ?, ?)", [req.body.id, req.body.name, req.body.description, req.body.intensity, req.body.type], function(err, resp){
+        if(err){
+            res.status(400).send(err)
+        }else{
+            res.send(req.body.id);
+        }
+    })
+});
+
+app.get('/devices/', function(req, res) {
+    debugger;
+    utils.query("SELECT * FROM Devices", function(err, respuesta){
+        
+        if (err) {
+            res.send(err).status(400)
+            return;
+        }
+
+        res.send(respuesta);
+    })
 });
 
 app.listen(PORT, function(req, res) {
     console.log("NodeJS API running correctly");
 });
 
-app.delete("/borrar", function(req, res){
+app.delete("/borrar/:id", function(req, res){
     console.log(req)
+    let id = req.params.id;
+
+    utils.query("DELETE FROM Devices WHERE id = ?", id, function(err, resp){
+        if(err){
+            res.status(400).send(err)
+        }else{
+            res.send(req.body.id);
+        }
+    })
 })
+
+function validarBody(body) {
+    let error = ""
+    let intensity = parseInt(body.intensity)
+
+    if (!intensity || intensity < 0 || intensity > 100) {
+        error += "Intensidad debe ser entre 0 y 100. " 
+    }
+
+    if (body.id == '') {
+        error += "Id obligatorio. " 
+    }
+
+    if (body.name == '') {
+        error += "Nombre obligatorio. " 
+    }
+
+    if (body.description == '') {
+        error += "Descripción obligatoria. " 
+    }
+
+    return error
+}
 
 //=======[ End of file ]=======================================================

@@ -37,6 +37,10 @@ app.put("/actualizar",function(req,res){
 app.post("/crear",function(req,res){
     let error = validarBody(req.body)
     
+    if(req.body.type == ""){
+        error += "Tipo de dispositivo obligatorio."
+    }
+
     if(error){
         res.status(400).send(error)
         return
@@ -48,7 +52,7 @@ app.post("/crear",function(req,res){
             if(err){
                 res.status(400).send(err)
             }else{
-                res.send(req.body.id);
+                res.status(200).send(req.body.id);
             }
     })
 });
@@ -85,7 +89,7 @@ function validarBody(body) {
     let error = ""
     let intensity = parseInt(body.intensity)
 
-    if (!intensity || intensity < 0 || intensity > 100) {
+    if (!body.intensity || intensity < 0 || intensity > 100) {
         error += "Intensidad debe ser entre 0 y 100. " 
     }
 

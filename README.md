@@ -158,15 +158,45 @@ En esta sección podés ver los detalles específicos de funcionamiento del cód
 
 ### Agregar un dispositivo
 
-Completá los pasos para agregar un dispositivo desde el cliente web.
+- Ingresar al portal principal de la aplicación.
+- Hacer click sobre el acordeón "Agregar dispositivo".
+- Se deben completar todos los campos:
+    - Id: Numérico mayor a cero. No puede ser igual al Id de otro dispositivo.
+    - Nombre: hasta 64 caracteres.
+    - Descripción: hasta 128 caracteres.
+    - Tipo de dispositivo: elegir uno de la lista.
+    - Intensidad: numérico entre 0 y 100
+- Hacer click en botón "Agregar dispositivo". Un mensaje se mostrará por pantalla indicando si se agregó el dispositivo o si ocurrió un error.
+
+### Editar un dispositivo
+
+- Hacer click sobre el ícono de lápiz del dispositivo que se quiere editar.
+- Solo se pueden editar los campos nombre, descripción e intensidad. Tienen las mismas validaciones que la creación.
+- Hacer click sobre el ícono de guardado del dispositivo. Un mensaje se mostrará por pantalla indicando si se editó el dispositivo o si ocurrió un error.
+
+### Borrar un dispositivo
+
+- Hacer click sobre el ícono de basura del dispositivo que se quiere editar.
+- Un mensaje se mostrará por pantalla indicando si se borró el dispositivo o si ocurrió un error.
 
 ### Frontend
 
-Completá todos los detalles sobre cómo armaste el frontend, sus interacciones, etc.
+Se respetó la arquitectura original del proyecto, solo se hicieron cambios específicos para permitir las nuevas funcionalidades:
+- El framework discrimina el método del listner que se debe ejecutar en base al tipo de método HTTP que se ejecuta.
+- Ahora la clase Device tiene un campo numérico 'intensidad', en vez de estado booleano.
+- La interfaz ResponseLister obliga a la clase Main a implementar métodos de recepción de eventos de borrado, actualización y creado de dispositivo.
+- La clase Main fue la que más cambios tuvo:
+    - Por un lado todo  lo correspondido a mostrar la información nueva. Además se incorporó un 'Map<String, String>' que determina qué ícono mostrar en la lista de dispositivo, en base a su tipo. Punto de mejora: separar esta clase ya que concentra mucho código HTML y Typescript.
+    - Además se incorporaron todas las funciones para tomar los datos del front y enviárselo al framework, y para procesar la respuesta enviada por el mismo.
+    - Todos los cambios hechos contemplaron que la página nunca se vea obligada a recargarse para mostrar la información actualizada.
+    - Todos los nuevos componentes utilizan código provisto por Materialize, entre ellos select, botones, acordeón, toast (alert).
 
 ### Backend
 
-Completá todos los detalles de funcionamiento sobre el backend, sus interacciones con el cliente web, la base de datos, etc.
+Se respetó la arquitectura original del proyecto, solo se hicieron cambios específicos para permitir las nuevas funcionalidades:
+- Se cambió la estructura de la tabla Devices para permitir guardar nivel de intensidad del dispositivo y que el tipo del mismo sea cadena de caracteres.
+- Se crearon los métodos con las querys correspondientes para llamar a la base de datos.
+- Se realizaron las validaciones para la entrada o modificación de los campos.
 
 <details><summary><b>Ver los endpoints disponibles</b></summary><br>
 
@@ -174,24 +204,62 @@ Completá todos los endpoints del backend con los metodos disponibles, los heade
 
 1) Devolver el estado de los dispositivos.
 
+```
+curl --location --request GET 'localhost:8000/devices'
+```
+
 ```json
-{
-    "method": "get",
-    "request_headers": "application/json",
-    "request_body": "",
-    "response_code": 200,
-    "request_body": {
-        "devices": [
-            {
-                "id": 1,
-                "status": true,
-                "description": "Kitchen light"
-            }
-        ]
+[
+    {
+        "id": 2,
+        "name": "Ventilador 2",
+        "description": "Ventilador Habitacio",
+        "intensity": 5,
+        "type": "Ventilador"
     },
-}
+    {
+        "id": 555,
+        "name": "sa",
+        "description": "sa",
+        "intensity": 5,
+        "type": "Sensor"
+    }
+]
 ``` 
 
+
+2) Crear un dispositivo nuevo
+
+```
+curl --location --request POST 'localhost:8000/crear' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "id": 27,
+    "name": "Ventilador",
+    "description": "Ventilador de techo",
+    "intensity":11,
+    "type":"Sensor"
+}'
+``` 
+
+3) Modificar un dispositivo
+
+```
+curl --location --request PUT 'localhost:8000/actualizar' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "id": 2,
+    "name": "Ventilador2",
+    "description": "Ventilador de techo2",
+    "intensity":12
+}'
+``` 
+
+4) Borrar un dispositivo
+
+``` 
+curl --location --request DELETE 'localhost:8000/borrar/2'
+``` 
 </details>
 
 </details>

@@ -6,17 +6,16 @@ class Main implements EventListenerObject, ResponseLister {
     public framework: FrameWork = new FrameWork();
     private listaTipos: Map<string, string> = new Map()
     constructor() {
-
-        this.framework.ejecutarRequest("GET", "http://localhost:8000/devices", this)
-
-        this.listaPersonas.push(new Usuario("Juan", 12, "jPerez"));
-        this.listaPersonas.push(new Administrador("Pedro", 35));
-        this.listaPersonas.push(new Persona("S", 12));
-        this.etidadesAcciones.push(new Usuario("Juan", 12, "jPerez"));
-        this.etidadesAcciones.push(new Administrador("Juan", 12));
-
         this.listaTipos["Luz"] = "lightbulb";
         this.listaTipos["Ventilador"] = "window";
+        this.listaTipos["Camara"] = "camera";
+        this.listaTipos["Sensor"] = "sensor";
+
+        this.loadDevices();
+    }
+
+    public loadDevices(){
+        this.framework.ejecutarRequest("GET", "http://localhost:8000/devices", this)
     }
    
     public handlerResponse(status: number, response: string) {
@@ -41,35 +40,38 @@ class Main implements EventListenerObject, ResponseLister {
             }
             
         } else {
-            alert("Algo salio mal")
+            M.toast({html: "Ocurrió un error"})
         }
     }
 
     handlerResponseActualizar(status: number, response: string) {
         if (status == 200) {
-            debugger;
             this.changeStatus(response, "block", "none")
-            alert("Se actualizó correctamente")
+            document.getElementById("name_" + response).textContent = (<HTMLInputElement>document.getElementById("name_edit_" + response)).value
+            document.getElementById("descr_" + response).textContent = (<HTMLInputElement>document.getElementById("descr_edit_" + response)).value
+            document.getElementById("intensity_" + response).textContent = "Intensidad: " + (<HTMLInputElement>document.getElementById("intensity_edit_" + response)).value + "%"
+
+            M.toast({html: "Se actualizó el dispositivo correctamente"})
         } else {
-            alert(response)
+            M.toast({html: response})
         }
 
     }
 
     handlerResponseBorrar(status: number, response: string) {
         if (status == 200) {
-            alert("Se actualizó correctamente")
-            window.location.reload()
+            M.toast({html: "Se borró el dispositivo correctamente"})
+            this.loadDevices()
         } else {
-            alert(response)
+            M.toast({html: response})
         }
     }
     handlerResponseCrear(status: number, response: string) {
         if (status == 200) {
-            alert("Se actualizó correctamente")
-            window.location.reload()
+            M.toast({html: "Se creó el dispositivo correctamente"})
+            this.loadDevices()
         } else {
-            alert(response)
+            M.toast({html: response})
         }
     }
 

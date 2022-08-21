@@ -32,14 +32,12 @@ SET time_zone = "+00:00";
 -- Table structure for table `Devices`
 --
 
-DROP TABLE `Devices`;
-
 CREATE TABLE `Devices` (
   `id` int(11) NOT NULL,
   `name` varchar(64) NOT NULL,
   `description` varchar(128) NOT NULL,
   `intensity` int(11) NOT NULL,
-  `type` int(11) NOT NULL
+  `type` VARCHAR(64) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
